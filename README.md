@@ -1,4 +1,4 @@
-# MRP parallel manufacturing extension for Odoo Community 12.0
+# MRP parallel manufacturing extension for Odoo Community
 
 Adds extra features needed by a custom/bespoke manufacturing business that makes unique products and needs to produce them in large quantity on parallel machines (work centers). It adds a timeline (GANTT) view using the web_timeline OCA module to allow planning work orders easily.
 It also depends on the mrp_production_request OCA module which gives ability to split manufacturing orders easily.
