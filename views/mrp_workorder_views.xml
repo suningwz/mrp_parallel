@@ -1,0 +1,33 @@
+<odoo>
+  <data>
+    
+    <record id="mrp_production_work_order_form" model="ir.ui.view">
+      <field name="name">mrp.production.work.order.form</field>
+      <field name="model">mrp.workorder</field>
+      <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit" />
+      <field name="arch" type="xml">
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[1]/field[@name='workcenter_id']" position="attributes">
+          <attribute name="attrs">{"readonly": ["|",["state","=","done"],["state","=","cancel"]]}</attribute>
+          <attribute name="readonly"/>
+        </xpath>
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]" position="before">
+          <page name="pg-timeline" string="Timeline">
+            <group name="grp-general" string="General">
+              <field name="timelinecolour" string="Label Colour"/>
+              <field name="timelinenotes" string="Tooltip Sticky Note"/>
+              <field name="origin" string="Source (Set in MO)"/>
+            </group>
+          </page>
+        </xpath>
+        <xpath expr="//form[1]/header[1]/field[@name='state']" position="after">
+          <button name="action_cancel" class="btn-danger" type="object" string="ADMIN: Cancel WO" groups="base.group_system"/>
+        </xpath>
+        <xpath expr="//form[1]" position="attributes">
+          <attribute name="attrs">{"delete":"0"}</attribute>
+          <attribute name="delete"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

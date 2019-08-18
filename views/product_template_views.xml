@@ -1,0 +1,21 @@
+<odoo>
+  <data>
+
+    <record id="product_template_product_form" model="ir.ui.view">
+      <field name="name">product.template.product.form</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view" />
+      <field name="arch" type="xml">
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]" position="after">
+          <page name="eng" string="Engineering">
+            <group name="grp-engspecsheet" string="Engineering Spec Sheet">
+              <field name="engspecsheet" string="Spec Sheet"/>
+              <field name="worksheet" widget="pdf_viewer" string=""/>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

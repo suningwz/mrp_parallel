@@ -1,0 +1,109 @@
+<odoo>
+    <data noupdate="0">
+
+      <!--
+      Custom field added to the Work Center model/view called TBC. 
+      When selected forces operator to re-assign the work order to a specific REAL work center of their choice after confirming schedule manually.
+      This allows for multiple groups of identical machines used for manufacturing which need to be assigned to individually.
+      NOTE: Before this can happen the Manufacturing Order must first be split into individual parts which can be done using a "Manufacturing Request" in the mrp_production_request community module.
+      -->
+      <!-- Work center TBC -->
+      <record model="ir.actions.server" id="mrp_parallel.workcenterwarning_serveraction">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+        <field name="child_ids" eval="[(6, 0, [])]"/>
+        <field name="code">
+          <![CDATA[# Available variables:
+#  - env: Odoo Environment on which the action is triggered
+#  - model: Odoo Model of the record on which the action is triggered; is a void recordset
+#  - record: record on which the action is triggered; may be void
+#  - records: recordset of all records on which the action is triggered in multi-mode; may be void
+#  - time, datetime, dateutil, timezone: useful Python libraries
+#  - log: log(message, level='info'): logging function to record debug information in ir.logging table
+#  - Warning: Warning Exception to use with raise
+# To return an action, assign: action = {...}
+
+raise Warning("You must manually assign a work center to this work order!\nThis is assigned to a TBC category work center.")
+
+]]>
+        </field>
+        <field name="crud_model_id" eval="False"/>
+        <field name="help" eval="False"/>
+        <field name="link_field_id" eval="False"/>
+        <field name="model_id" ref="mrp.model_mrp_workorder"/>
+        <field name="name">Work center warning</field>
+        <field name="sequence">1</field>
+        <field name="state">code</field>
+      </record>
+      <!-- Work center TBC -->
+      <record model="base.automation" id="mrp_parallel.workcenterwarning_autoaction">
+        <field name="action_server_id" ref="mrp_parallel.workcenterwarning_serveraction"/>
+        <field name="active" eval="True"/>
+        <field name="filter_domain">["&amp;",["state","=","progress"],["workcenter_id.workcentertbc","=",True]]</field>
+        <field name="filter_pre_domain">["|",["state","=","pending"],["state","=","ready"]]</field>
+        <field name="last_run" eval="False"/>
+        <field name="on_change_fields" eval="False"/>
+        <field name="trg_date_id" eval="False"/>
+        <field name="trg_date_range" eval="False"/>
+        <field name="trg_date_range_type" eval="False"/>
+        <field name="trigger">on_write</field>
+      </record>
+      
+      <!--
+      When a new Work Order is created, run an automated action to schedule the planned start / end dates automatically based on the duration_expected.
+      This is already part of enterprise Odoo but apparently not in community.
+      
+      Also if a EngineerSpecSheet is assigned to a product, override the default work order's PDF worksheet with the attachment from the EngineerSpecSheet instead.
+      -->
+      <!--Auto Work Order scheduling and Engineering Spec Worksheet override-->
+      <record model="ir.actions.server" id="mrp_parallel.workorderschedule_serveraction">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+        <field name="child_ids" eval="[(6, 0, [])]"/>
+        <field name="code">
+          <![CDATA[# Available variables:
+#  - env: Odoo Environment on which the action is triggered
+#  - model: Odoo Model of the record on which the action is triggered; is a void recordset
+#  - record: record on which the action is triggered; may be void
+#  - records: recordset of all records on which the action is triggered in multi-mode; may be void
+#  - time, datetime, dateutil, timezone: useful Python libraries
+#  - log: log(message, level='info'): logging function to record debug information in ir.logging table
+#  - Warning: Warning Exception to use with raise
+# To return an action, assign: action = {...}
+
+for obj in records:
+    if (obj.duration_expected > 0):
+      durationtotal = datetime.timedelta(minutes=obj.duration_expected)
+      todaysdate = datetime.datetime.today()
+      obj.write({"date_planned_start": todaysdate})
+      obj.write({"date_planned_finished": todaysdate + durationtotal})
+
+    if (obj.product_id.engspecsheet):
+      obj.write({"worksheet": obj.product_id.engspecsheet.attachment})
+        
+]]>
+        </field>
+        <field name="crud_model_id" eval="False"/>
+        <field name="help" eval="False"/>
+        <field name="link_field_id" eval="False"/>
+        <field name="model_id" ref="mrp.model_mrp_workorder"/>
+        <field name="name">Auto schedule work orders+worksheet override</field>
+        <field name="sequence">2</field>
+        <field name="state">code</field>
+      </record>
+      <!--Auto Work Order scheduling and Worksheet override-->
+      <record model="base.automation" id="mrp_parallel.workorderschedule_autoaction">
+        <field name="action_server_id" ref="mrp_parallel.workorderschedule_serveraction"/>
+        <field name="active" eval="True"/>
+        <field name="filter_domain">[["duration_expected","&gt;",0]]</field>
+        <field name="filter_pre_domain" eval="False"/>
+        <field name="last_run" eval="False"/>
+        <field name="on_change_fields" eval="False"/>
+        <field name="trg_date_id" eval="False"/>
+        <field name="trg_date_range" eval="False"/>
+        <field name="trg_date_range_type" eval="False"/>
+        <field name="trigger">on_create</field>
+      </record>
+      
+    </data>
+</odoo>

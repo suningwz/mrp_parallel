@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{299a47fa-cb1a-4589-86ec-84ed0b3eca3f}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>__init__.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>MSBuild|python|$(MSBuildProjectFullPath)</InterpreterId>
+    <Name>mrp_parallel</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="controllers\controllers.py" />
+    <Compile Include="controllers\__init__.py" />
+    <Compile Include="models\engspecsheet.py" />
+    <Compile Include="models\workcenter.py" />
+    <Compile Include="models\opportunity.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\product.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\workorder.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\__init__.py" />
+    <Compile Include="__init__.py" />
+    <Compile Include="__manifest__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="controllers" />
+    <Folder Include="demo\" />
+    <Folder Include="models" />
+    <Folder Include="data\" />
+    <Folder Include="templates\" />
+    <Folder Include="static\" />
+    <Folder Include="security\" />
+    <Folder Include="static\img\" />
+    <Folder Include="views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\ir_sequence_data.xml" />
+    <Content Include="data\ir_actions_server_data.xml" />
+    <Content Include="demo\demo.xml" />
+    <Content Include="security\engspecsheet_security.xml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="security\ir.model.access.csv" />
+    <Content Include="static\img\icon.jpg" />
+    <Content Include="views\timeline_views.xml" />
+    <Content Include="templates\templates.xml" />
+    <Content Include="views\engspecsheet_views.xml" />
+    <Content Include="views\mrp_workorder_views.xml" />
+    <Content Include="views\product_template_views.xml" />
+    <Content Include="views\mrp_workcenter_views.xml" />
+    <Content Include="views\product_product_views.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="..\..\..\..\..\Program Files (x86)\Odoo 12.0\python\">
+      <Id>python</Id>
+      <Version>3.6</Version>
+      <Description>python</Description>
+      <InterpreterPath>python.exe</InterpreterPath>
+      <WindowsInterpreterPath>pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

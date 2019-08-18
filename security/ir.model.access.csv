@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+eng_admin,Engineering Spec Sheet admin access,model_mrp_parallel_engspecsheet,engspecsheet_group_manager,1,1,1,1
+eng_user,Engineering Spec Sheet user access,model_mrp_parallel_engspecsheet,engspecsheet_group_user,1,0,0,0

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="mrp_production_workorder_timeline" model="ir.ui.view">
+    <field name="name">mrp.production.workorder.timeline</field>
+    <field name="model">mrp.workorder</field>
+    <field name="type">timeline</field>
+    <field name="arch" type="xml">
+      <timeline stack="true" date_stop="date_planned_finished" date_start="date_planned_start" string="Operations" default_group_by="workcenter_id" event_open_popup="true" zoomKey="ctrlKey" colors="#80bfff:state == 'done';#ff8080:state == 'cancel';#80ff80:state == 'pending';#80ff80:state == 'ready';#ffbf80:state == 'progress" mode="week">
+        <field name="workcenter_id"/>
+        <field name="production_id"/>
+        <field name="product_id"/>
+        <field name="operation_id"/>
+        <field name="qty_production"/>
+        <field name="origin"/>
+        <field name="name"/>
+        <field name="timelinecolour"/>
+        <field name="timelinenotes"/>
+        <templates>
+          <div t-name="timeline-item">
+            <span t-attf-style="background:{{ record.timelinecolour }};border:solid 1px #bfbfbf;border-radius:10px;padding:2.5px;margin-right:5px;display:inline-block;font-weight:bold;color:white;">
+              <abbr t-if="record.timelinenotes" t-attf-title="{{ record.timelinenotes }}">
+                <i class="fa fa-sticky-note" style="margin-right:5px;color:yellow"/>
+              </abbr>
+              <span t-if="record.origin" t-esc="record.origin"/>
+              <span t-if="record.origin == false" t-esc="record.production_id[1]" style="font-weight: bold;"/>
+            </span>
+            <span t-esc="record.operation_id[1]"/>
+            <br/>
+            <span t-esc="record.product_id[1]"/> x <span t-esc="record.qty_production"/> Unit(s)
+          </div>
+        </templates>
+      </timeline>
+    </field>
+  </record>
+
+  <!--
+  Create timeline search view for Work Orders adding source, product
+  -->
+  <record model="ir.ui.view" id="mrp_production_workorder_select">
+    <field name="name">mrp.production.workorder.select</field>
+    <field name="model">mrp.workorder</field>
+    <field name="inherit_id" ref="mrp.view_mrp_production_workorder_form_view_filter"/>
+    <field name="type">search</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="origin" string="Source"/>
+        <field name="product_id" string="Product"/>
+        <field name="operation_id" string="Operation"/>
+        <field name="timelinecolour" string="Timeline Colour"/>
+        <field name="timelinenotes" string="Timeline Notes"/>
+        <separator/>
+        <group expand="1">
+          <filter string="Product" name="product_id" domain="[]" context="{'group_by':'product_id'}"/>
+          <filter string="Operation" name="operation_id" domain="[]" context="{'group_by':'operation_id'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="mrp.mrp_workorder_todo" model="ir.actions.act_window">
+    <field name="name">Work Orders</field>
+    <field name="res_model">mrp.workorder</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">timeline,kanban,tree,form,calendar,pivot,graph</field>
+  </record>
+
+</odoo>

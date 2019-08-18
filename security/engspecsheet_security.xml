@@ -1,0 +1,24 @@
+<odoo>
+  <data>
+
+    <record id="mrp_parallel.engspecsheet_module_management" model="ir.module.category">
+      <field name="name">Engineering Spec Sheet</field>
+      <field name="description">User access level for this module</field>
+      <field name="sequence">3</field>
+    </record>
+
+    <record id="mrp_parallel.engspecsheet_group_user" model="res.groups">
+      <field name="name">User</field>
+      <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+      <field name="users" eval="[(4, ref('base.user_root'))]"/>
+      <field name="category_id" ref="mrp_parallel.engspecsheet_module_management"/>
+    </record>
+
+    <record id="mrp_parallel.engspecsheet_group_manager" model="res.groups">
+      <field name="name">Manager</field>
+      <field name="implied_ids" eval="[(4, ref('mrp_parallel.engspecsheet_group_user'))]"/>
+      <field name="category_id" ref="mrp_parallel.engspecsheet_module_management"/>
+    </record>
+
+  </data>
+</odoo>
