@@ -5,7 +5,7 @@
     <field name="model">mrp.workorder</field>
     <field name="type">timeline</field>
     <field name="arch" type="xml">
-      <timeline stack="true" date_stop="date_planned_finished" date_start="date_planned_start" string="Operations" default_group_by="workcenter_id" event_open_popup="true" zoomKey="ctrlKey" colors="#80bfff:state == 'done';#ff8080:state == 'cancel';#80ff80:state == 'pending';#80ff80:state == 'ready';#ffbf80:state == 'progress" mode="week">
+      <timeline stack="true" date_stop="date_planned_finished" date_start="date_planned_start" string="Operations" default_group_by="workcenter_id" event_open_popup="true" zoomKey="" colors="#80bfff:state == 'done';#ff8080:state == 'cancel';#80ff80:state == 'pending';#80ff80:state == 'ready';#ffbf80:state == 'progress" mode="week">
         <field name="workcenter_id"/>
         <field name="production_id"/>
         <field name="product_id"/>
